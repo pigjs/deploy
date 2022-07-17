@@ -1,0 +1,35 @@
+{
+  "name": "ye-deploy",
+  "version": "1.0.0",
+  "description": "前端轻量级部署工具",
+  "main": "lib/index.js",
+  "bin": {
+    "ye-deploy": "./bin/ye-deploy.js"
+  },
+  "scripts": {
+    "build": "father-build",
+    "dev": "father-build --watch"
+  },
+  "publishConfig": {
+    "registry": "https://www.npmjs.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrYeZiqing/ye-deploy.git"
+  },
+  "keywords": [
+    "deploy"
+  ],
+  "author": "MrYeZiqing",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrYeZiqing/ye-deploy/issues"
+  },
+  "homepage": "https://github.com/MrYeZiqing/ye-deploy#readme",
+  "devDependencies": {
+    "father-build": "^1.17.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.18.6"
+  }
+}
