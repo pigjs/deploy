@@ -1,6 +1,6 @@
 {
   "name": "ye-deploy",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "前端轻量级部署工具",
   "main": "lib/index.js",
   "bin": {
@@ -8,10 +8,11 @@
   },
   "scripts": {
     "build": "father-build",
-    "dev": "father-build --watch"
+    "dev": "father-build --watch",
+    "pub":"npm publish --access=public"
   },
   "publishConfig": {
-    "registry": "https://www.npmjs.com/"
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
@@ -27,9 +28,14 @@
   },
   "homepage": "https://github.com/MrYeZiqing/ye-deploy#readme",
   "devDependencies": {
-    "father-build": "^1.17.2"
+    "father-build": "^1.17.2",
+    "ssh2-streams": "^0.4.10"
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.6"
+    "lodash.merge": "^4.6.2",
+    "node-ssh": "^12.0.0",
+    "ora": "^5.4.1",
+    "schema-utils": "^4.0.0",
+    "yargs-parser": "^21.0.1"
   }
 }

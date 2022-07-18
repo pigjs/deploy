@@ -1,3 +1,3 @@
-import build from './build'
+import deploy from './deploy'
 
-export default build
+export default deploy
