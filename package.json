@@ -9,7 +9,7 @@
   "scripts": {
     "build": "father-build",
     "dev": "father-build --watch",
-    "pub":"npm publish --access=public"
+    "pub": "npm publish --access=public"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -35,6 +35,7 @@
     "lodash.merge": "^4.6.2",
     "node-ssh": "^12.0.0",
     "ora": "^5.4.1",
+    "rimraf": "^3.0.2",
     "schema-utils": "^4.0.0",
     "yargs-parser": "^21.0.1"
   }
