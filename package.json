@@ -1,46 +1,65 @@
 {
-  "name": "@pigjs/deploy",
-  "version": "2.0.0",
-  "description": "前端轻量级部署工具",
-  "main": "lib/index.js",
-  "bin": {
-    "pig-deploy": "./bin/index.js"
-  },
-  "files": [
-    "bin",
-    "lib"
-  ],
-  "scripts": {
-    "build": "father build",
-    "dev": "father dev",
-    "doctor": "father doctor",
-    "pub": "npm publish --access=public"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MrYeZiqing/ye-deploy.git"
-  },
-  "keywords": [
-    "deploy"
-  ],
-  "author": "MrYeZiqing",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MrYeZiqing/deploy/issues"
-  },
-  "homepage": "https://github.com/MrYeZiqing/deploy#readme",
-  "devDependencies": {
-    "father": "^4.1.4"
-  },
-  "dependencies": {
-    "lodash.merge": "^4.6.2",
-    "node-ssh": "^12.0.0",
-    "ora": "^5.4.1",
-    "rimraf": "^3.0.2",
-    "schema-utils": "^4.0.0",
-    "yargs-parser": "^21.0.1"
-  }
+    "name": "@pigjs/deploy",
+    "version": "2.0.0",
+    "description": "前端轻量级部署工具",
+    "keywords": [
+        "deploy"
+    ],
+    "homepage": "https://github.com/MrYeZiqing/deploy#readme",
+    "bugs": {
+        "url": "https://github.com/MrYeZiqing/deploy/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MrYeZiqing/ye-deploy.git"
+    },
+    "license": "ISC",
+    "author": "MrYeZiqing",
+    "main": "lib/index.js",
+    "bin": {
+        "pig-deploy": "./bin/index.js"
+    },
+    "files": [
+        "bin",
+        "lib"
+    ],
+    "scripts": {
+        "build": "father build",
+        "commit-msg": "pig-fabric --hooks=commit-msg",
+        "dev": "father dev",
+        "doctor": "father doctor",
+        "lint": "eslint src --ext .js,.jsx,.ts,.tsx --quiet && stylelint 'src/**/*.{less,css}'",
+        "lint-fix": "eslint src --ext .js,.jsx,.ts,.tsx --quiet --fix && stylelint 'src/**/*.{less,css}' --fix",
+        "pig-fabric:install": "pig-fabric install",
+        "pre-commit": "pig-fabric --hooks=pre-commit && lint-staged",
+        "pre-merge-commit": "pig-fabric --hooks=pre-merge-commit",
+        "prepare": "npx husky install",
+        "pub": "npm publish --access=public"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx,less,css,md}": "pretty-quick --staged",
+        "*.{js,jsx,ts,tsx}": "eslint --fix --quiet",
+        "*.{css,less}": "stylelint"
+    },
+    "dependencies": {
+        "lodash.merge": "^4.6.2",
+        "node-ssh": "^12.0.0",
+        "ora": "^5.4.1",
+        "rimraf": "^3.0.2",
+        "schema-utils": "^4.0.0",
+        "yargs-parser": "^21.0.1"
+    },
+    "devDependencies": {
+        "@pigjs/fabric": "^1.0.1",
+        "eslint": "7.32.0",
+        "father": "^4.1.4",
+        "husky": "8.0.2",
+        "lint-staged": "13.0.3",
+        "prettier": "2.7.1",
+        "pretty-quick": "3.1.3",
+        "stylelint": "13.13.1"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    }
 }
