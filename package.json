@@ -6,6 +6,10 @@
   "bin": {
     "pig-deploy": "./bin/index.js"
   },
+  "files": [
+    "bin",
+    "lib"
+  ],
   "scripts": {
     "build": "father build",
     "dev": "father dev",
@@ -29,8 +33,7 @@
   },
   "homepage": "https://github.com/MrYeZiqing/deploy#readme",
   "devDependencies": {
-    "father": "^4.1.4",
-    "ssh2-streams": "^0.4.10"
+    "father": "^4.1.4"
   },
   "dependencies": {
     "lodash.merge": "^4.6.2",
