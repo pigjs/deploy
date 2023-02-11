@@ -1,14 +1,15 @@
 {
-  "name": "ye-deploy",
-  "version": "1.0.6",
+  "name": "@pigjs/deploy",
+  "version": "2.0.0",
   "description": "前端轻量级部署工具",
   "main": "lib/index.js",
   "bin": {
-    "ye-deploy": "./bin/ye-deploy.js"
+    "pig-deploy": "./bin/index.js"
   },
   "scripts": {
-    "build": "father-build",
-    "dev": "father-build --watch",
+    "build": "father build",
+    "dev": "father dev",
+    "doctor": "father doctor",
     "pub": "npm publish --access=public"
   },
   "publishConfig": {
@@ -24,11 +25,11 @@
   "author": "MrYeZiqing",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MrYeZiqing/ye-deploy/issues"
+    "url": "https://github.com/MrYeZiqing/deploy/issues"
   },
-  "homepage": "https://github.com/MrYeZiqing/ye-deploy#readme",
+  "homepage": "https://github.com/MrYeZiqing/deploy#readme",
   "devDependencies": {
-    "father-build": "^1.17.2",
+    "father": "^4.1.4",
     "ssh2-streams": "^0.4.10"
   },
   "dependencies": {

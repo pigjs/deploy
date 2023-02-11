@@ -1,6 +1,11 @@
-export default {
+import { defineConfig } from 'father';
+
+export default defineConfig({
+    // more father config: https://github.com/umijs/father/blob/master/docs/config.md
     cjs: {
-        type:'babel',
-        lazy:true
+        input: 'src',
+        output: 'lib',
+        platform: 'node',
+        transformer: 'babel'
     }
-}
+});
