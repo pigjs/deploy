@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { basename } from 'path';
 import type { DeployConfig, ServerConfig } from '../../types';
-import { getVersion } from '../../utils/getVersion';
+import { getVersion, parseVersion } from '../../utils/getVersion';
 import { spinnerLog } from '../../utils/logs';
 import { SshServer } from '../../utils/sshServer';
 
@@ -145,25 +145,28 @@ export class Deploy extends SshServer {
 
         if (list.length > maxLimit) {
             const listDay = list.map((item) => {
-                const day = item.replace('_', ' ');
+                const day = parseVersion(item);
                 return dayjs(day);
             });
-            const minVersion = dayjs(dayjs.min(listDay)).format('YYYY-MM-DD_HH:mm:ss');
+            const minVersion = getVersion(dayjs(dayjs.min(listDay)));
 
             // 删除旧版本
-            await this.runCommand({ command: `rm -rf ${sourceDir}/${minVersion}` });
+            await this.runCommand({ command: `rm -rf ${sourceDir}/${minVersion}`, cwd: sourceDir });
         }
     };
     /** 上传完成 */
     private async uploadDone() {
-        const { useUploadDone } = this.deployConfig;
+        const { useUploadDone, version } = this.deployConfig;
         // 上传完成后允许用户自定义一些操作
         if (useUploadDone) {
             await useUploadDone(this.runCommand.bind(this));
         }
         // 断开连接
         this.dispose();
-        spinnerLog('部署完成').succeed();
+        spinnerLog().succeed('部署完成');
+        if (version) {
+            spinnerLog().succeed(`当前版本号: ${version}`);
+        }
     }
 }
 

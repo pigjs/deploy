@@ -14,7 +14,7 @@ function mergeDefaultConfig(config: UserConfig) {
         };
         const { privateKey, webDir, webVersion } = item;
         if (webVersion) {
-            const { sourceDir, maxLimit = 3 } = webVersion;
+            const { sourceDir, maxLimit = 5 } = webVersion;
             // 去除路径最后的 / 防止软链接出错
             cloneItem.webDir = webDir.replace(/\/$/g, '');
             cloneItem.webVersion = {

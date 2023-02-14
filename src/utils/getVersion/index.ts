@@ -5,7 +5,10 @@ import minMax from 'dayjs/plugin/minMax';
 dayjs.extend(minMax);
 
 /** 获取版本号 */
-export function getVersion() {
+export function getVersion(version?: any) {
+    if (version) {
+        return dayjs(version).format('YYYY-MM-DD_HH:mm:ss');
+    }
     return dayjs().format('YYYY-MM-DD_HH:mm:ss');
 }
 

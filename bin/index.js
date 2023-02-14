@@ -28,5 +28,5 @@ if (args.v || args.version) {
         command = 'revert';
     }
     const commands = require('../lib/index').default;
-    commands({ command, customPath: config });
+    commands({ command, customPath: config, cwd: process.cwd() });
 }

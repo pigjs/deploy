@@ -37,10 +37,11 @@ export async function getRemoteVersion(config: ServerConfig[]) {
         });
     });
     const res = await Promise.all(configPromise);
+
     const data = res
         .map((item: string) => {
             return item.split('\n');
         })
         .filter((item) => item);
-    return getSameValue(data);
+    return getSameValue(...data);
 }

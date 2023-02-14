@@ -13,11 +13,13 @@ export interface Commands extends DeployConfig {
 
 export default async function (options: Commands) {
     const { command, ...otherOptions } = options;
+
     if (!commands.includes(command)) {
         console.log('命令不存在');
         process.exit(0);
     } else {
         const config = await getConfig(otherOptions);
+
         if (command === 'revert') {
             timeDirector(() => revert(config));
         }

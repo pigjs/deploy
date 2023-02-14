@@ -21,6 +21,10 @@ export default async function revert(config: DeployConfig) {
         }
         spinner.succeed('获取远程服务器项目版本成功');
         const version = await selectVersion(versions);
+        if (version === 'cancel') {
+            spinnerLog().succeed('已取消');
+            process.exit(0);
+        }
         const spinnerTwo = spinnerLog('正在进行版本回滚...').start();
         await revertVersion(serverConfig, version);
         spinnerTwo.succeed('版本回滚完成');
