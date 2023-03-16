@@ -35,8 +35,7 @@
         "pig-fabric:install": "pig-fabric install",
         "pre-commit": "pig-fabric --hooks=pre-commit && lint-staged",
         "pre-merge-commit": "pig-fabric --hooks=pre-merge-commit",
-        "prepare": "npx husky install",
-        "pub": "npm publish --access=public"
+        "prepare": "npx husky install"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx,less,css,md}": "pretty-quick --staged",
@@ -63,6 +62,7 @@
         "stylelint": "13.13.1"
     },
     "publishConfig": {
+        "access": "public",
         "registry": "https://registry.npmjs.org/"
     }
 }
