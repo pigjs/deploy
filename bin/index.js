@@ -19,7 +19,7 @@ if (args.v || args.version) {
     console.log('   revert   version rollback');
     process.exit(0);
 } else {
-    const { _: param = [], config } = args;
+    const { _: param = [], config, ...otherArgs } = args;
     let command;
     // 需要支持 1.x 版本
     if (param.length === 0) {
@@ -28,5 +28,5 @@ if (args.v || args.version) {
         command = 'revert';
     }
     const commands = require('../lib/index').default;
-    commands({ command, customPath: config, cwd: process.cwd() });
+    commands({ readConfigFile: true, ...otherArgs, command, customPath: config, cwd: process.cwd() });
 }

@@ -8,7 +8,10 @@ import type { DeployConfig } from './types';
 const commands = ['revert', 'deploy'] as const;
 
 export interface Commands extends DeployConfig {
+    /** 命令 */
     command: typeof commands[number];
+    /** 是否需要读取配置文件 */
+    readConfigFile?: boolean;
 }
 
 export default async function (options: Commands) {

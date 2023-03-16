@@ -42,16 +42,24 @@ function mergeDefaultConfig(config: UserConfig) {
     };
 }
 
+type Options = DeployConfig & {
+    /** 是否需要读取配置文件 */
+    readConfigFile?: boolean;
+};
+
 /** 获取配置 */
-export async function getConfig(options: DeployConfig) {
-    const spinner = spinnerLog('正在读取配置文件...').start();
-    const { cwd, customPath, ...otherOptions } = options;
+export async function getConfig(options: Options) {
+    const { cwd, customPath, readConfigFile, ...otherOptions } = options;
     let userConfig: UserConfig;
-    try {
-        userConfig = getUserConfig({ cwd, customPath });
-    } catch (err) {
-        spinner.fail('配置文件读取失败');
-        throw new Error(err);
+    if (readConfigFile) {
+        const spinner = spinnerLog('正在读取配置文件...').start();
+        try {
+            userConfig = getUserConfig({ cwd, customPath });
+        } catch (err) {
+            spinner.fail('配置文件读取失败');
+            throw new Error(err);
+        }
+        spinner.succeed('配置文件读取成功');
     }
     const config = {
         ...userConfig,
@@ -60,7 +68,6 @@ export async function getConfig(options: DeployConfig) {
     // 校验参数
     // validateConfig(config)
     const resetConfig = mergeDefaultConfig(config);
-    spinner.succeed('配置文件读取成功');
     return {
         ...resetConfig,
         cwd
