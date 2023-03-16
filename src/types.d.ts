@@ -19,8 +19,6 @@ export interface ServerConfig {
         sourceDir: string;
         /** 最大存放几个版本 默认 5个 */
         maxLimit?: number;
-        /** 自定义设置版本号 */
-        customVersion?: () => string;
     };
 }
 
@@ -31,10 +29,13 @@ export interface DeployConfig {
     script: string;
     /** 本地打包文件目录 */
     distPath: string;
-    /** 上传过程中 过滤某些文件 */
-    useUploadValidate?: (itemPath: string) => boolean;
-    /** 上传完成后允许用户自定义一些操作 */
-    useUploadDone?: (command) => Promise<void> | void;
+    /** 插件 */
+    plugins: {
+        /** 上传过程中 过滤某些文件 */
+        uploadValidate?: (itemPath: string) => boolean;
+        /** 上传完成后允许用户自定义一些操作 */
+        useUploadDone?: (command) => Promise<void> | void;
+    };
     /** 运行目录 */
     cwd?: string;
     /** 用户自定义配置文件地址 */

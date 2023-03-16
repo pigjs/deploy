@@ -15,7 +15,7 @@ export default async function revert(config: DeployConfig) {
     } else {
         const spinner = spinnerLog('正在获取远程服务器项目版本...').start();
         const versions = await getRemoteVersion(serverConfig);
-        if (versions.length === 0) {
+        if (versions.length <= 1) {
             spinner.fail('服务器上没有可回滚的版本!');
             return;
         }

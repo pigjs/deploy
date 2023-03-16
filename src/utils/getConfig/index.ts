@@ -1,6 +1,6 @@
 import { spinnerLog } from '../logs';
 import { getUserConfig } from './getUserConfig';
-// import { validateConfig } from './validateConfig';
+import { validateConfig } from './validateConfig';
 
 import type { DeployConfig, UserConfig } from '../../types';
 
@@ -65,8 +65,9 @@ export async function getConfig(options: Options) {
         ...userConfig,
         ...otherOptions
     };
+
     // 校验参数
-    // validateConfig(config)
+    validateConfig(config);
     const resetConfig = mergeDefaultConfig(config);
     return {
         ...resetConfig,

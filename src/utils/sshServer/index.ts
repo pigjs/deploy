@@ -8,14 +8,15 @@ export class SshServer {
     public ssh: NodeSSHType = new NodeSSH();
 
     /** 连接服务器 */
-    public async connectSSH(config: Config) {
-        const spinner = spinnerLog('正在连接服务器...').start();
+    public async connectSSH(config: Config, getText?: (text: string) => string) {
+        const logText = getText ? getText : (text) => text;
+        const spinner = spinnerLog(logText('正在连接服务器...')).start();
 
         try {
             await this.ssh.connect(config);
-            spinner.succeed('服务器连接成功');
+            spinner.succeed(logText('服务器连接成功'));
         } catch (error) {
-            spinner.fail('服务器连接失败');
+            spinner.fail(logText('服务器连接失败'));
             throw new Error('服务器连接失败');
         }
     }

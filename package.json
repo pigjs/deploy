@@ -1,17 +1,19 @@
 {
     "name": "@pigjs/deploy",
     "version": "2.0.0",
-    "description": "前端轻量级部署工具",
+    "description": "A front-end lightweight deployment tool",
     "keywords": [
-        "deploy"
+        "deploy",
+        "ssh",
+        "revert"
     ],
-    "homepage": "https://github.com/MrYeZiqing/deploy#readme",
+    "homepage": "https://github.com/pigjs/deploy#readme",
     "bugs": {
-        "url": "https://github.com/MrYeZiqing/deploy/issues"
+        "url": "https://github.com/pigjs/deploy/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/MrYeZiqing/ye-deploy.git"
+        "url": "git+https://github.com/pigjs/deploy.git"
     },
     "license": "ISC",
     "author": "MrYeZiqing",
@@ -44,7 +46,6 @@
     "dependencies": {
         "dayjs": "^1.11.7",
         "inquirer": "^8.1.2",
-        "lodash": "^4.17.21",
         "node-ssh": "^12.0.0",
         "ora": "^5.4.1",
         "rimraf": "^3.0.2",

@@ -21,8 +21,7 @@ if (args.v || args.version) {
 } else {
     const { _: param = [], config, ...otherArgs } = args;
     let command;
-    // 需要支持 1.x 版本
-    if (param.length === 0) {
+    if (param.includes('deploy')) {
         command = 'deploy';
     } else if (param.includes('revert')) {
         command = 'revert';

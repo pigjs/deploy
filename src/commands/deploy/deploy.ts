@@ -40,25 +40,34 @@ export class Deploy extends SshServer {
         this.deployConfig = config;
         const { serverConfig, version } = config;
         const { webDir, webVersion } = serverConfig;
-        const { sourceDir } = webVersion;
+        const { sourceDir } = webVersion || {};
         this.targetDir = version ? `${sourceDir}/${version}` : webDir;
+    }
+    private getText(text: string) {
+        const { serverConfig } = this.deployConfig;
+        const { host } = serverConfig;
+        return `${host}: ${text}`;
     }
     public async run() {
         const { serverConfig, version } = this.deployConfig;
         const { webVersion, webDir, ...config } = serverConfig;
-        await this.connectSSH(config);
-        await this.uploadServer();
-        // 需要版本管理的使用软链接
-        if (version) {
-            await this.softLink(this.targetDir, webDir);
+        await this.connectSSH(config, this.getText.bind(this));
+        if (!version) {
+            await this.clearOldFile();
         }
-        await this.delRedundantVersion();
+        await this.uploadServer();
+        // 版本管理
+        if (version) {
+            // 需要版本管理的使用软链接
+            await this.softLink(this.targetDir, webDir);
+            await this.delRedundantVersion();
+        }
         await this.uploadDone();
     }
     /** 上传到服务器 */
     private async uploadServer() {
-        const { distPath, useUploadValidate } = this.deployConfig;
-        const spinner = spinnerLog('文件上传中...').start();
+        const { distPath, plugins } = this.deployConfig;
+        const spinner = spinnerLog(this.getText('文件上传中...')).start();
         try {
             await this.ssh.putDirectory(distPath, this.targetDir, {
                 recursive: true,
@@ -70,8 +79,8 @@ export class Deploy extends SshServer {
                     if (prohibitFiles.includes(baseName)) {
                         return false;
                     }
-                    if (typeof useUploadValidate === 'function') {
-                        return useUploadValidate(itemPath);
+                    if (typeof plugins?.uploadValidate === 'function') {
+                        return plugins.uploadValidate(itemPath);
                     }
                     return true;
                 },
@@ -86,9 +95,9 @@ export class Deploy extends SshServer {
                 }
             });
             await this.uploadServerAgain(spinner);
-            spinner.succeed('文件上传成功');
+            spinner.succeed(this.getText('文件上传成功'));
         } catch (error) {
-            spinner.fail('文件上传服务器异常');
+            spinner.fail(this.getText('文件上传服务器异常'));
             return Promise.reject(error);
         }
     }
@@ -99,7 +108,7 @@ export class Deploy extends SshServer {
         if (failed.length > 0) {
             // 重试多次后还是失败的
             if (retryCount <= 0) {
-                spinner.fail('文件上传到服务器失败');
+                spinner.fail(this.getText('文件上传到服务器失败'));
                 return;
             }
             this.fileFailed = {
@@ -154,19 +163,30 @@ export class Deploy extends SshServer {
             await this.runCommand({ command: `rm -rf ${sourceDir}/${minVersion}`, cwd: sourceDir });
         }
     };
+    // 清空线上目标目录的旧文件
+    async clearOldFile() {
+        let status = true;
+        try {
+            await this.runCommand({ command: `find ${this.targetDir}`, cwd: '/' });
+        } catch (err) {
+            // 报错说明当前服务器上没有这个目录不需要处理
+            status = false;
+        }
+        if (status) {
+            // 删除旧版本
+            await this.runCommand({ command: `rm -rf ${this.targetDir}`, cwd: '/' });
+        }
+    }
     /** 上传完成 */
     private async uploadDone() {
-        const { useUploadDone, version } = this.deployConfig;
+        const { plugins } = this.deployConfig;
         // 上传完成后允许用户自定义一些操作
-        if (useUploadDone) {
-            await useUploadDone(this.runCommand.bind(this));
+        if (typeof plugins?.useUploadDone === 'function') {
+            await plugins.useUploadDone(this.runCommand.bind(this));
         }
         // 断开连接
         this.dispose();
-        spinnerLog().succeed('部署完成');
-        if (version) {
-            spinnerLog().succeed(`当前版本号: ${version}`);
-        }
+        spinnerLog().succeed(this.getText('部署完成'));
     }
 }
 
@@ -193,4 +213,5 @@ export async function deployMultiple(config: DeployConfig) {
         });
     });
     await Promise.all(promiseList);
+    spinnerLog().succeed(`当前版本号: ${version}`);
 }
