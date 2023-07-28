@@ -22,16 +22,22 @@ export class SshServer {
     }
 
     /** command 命令操作 */
-    public async runCommand({ command, cwd }: { command: string; cwd: string }) {
-        const data = await this.ssh.execCommand(command, {
-            cwd
+    public async runCommand({ command, cwd, logger }: { command: string; cwd: string; logger?: boolean }) {
+        return await this.ssh.execCommand(command, {
+            cwd,
+            onStdout: (chunk: Buffer) => {
+                if (logger) {
+                    log(chunk.toString('utf-8'));
+                }
+            },
+            onStderr(chunk: Buffer) {
+                const errText = chunk.toString('utf8');
+                if (logger) {
+                    log(errText);
+                }
+                throw new Error(errText);
+            }
         });
-        const { stdout, stderr } = data;
-        if (stderr) {
-            log(stderr);
-            return Promise.reject(stderr);
-        }
-        return stdout;
     }
 
     /** 软链接 */
@@ -40,7 +46,7 @@ export class SshServer {
         const data = await this.runCommand({ command: 'ls', cwd: sourceFile });
         const name = basename(targetFile);
         // 软链接没有生效
-        if (data.indexOf(name) !== -1) {
+        if (data.stdout.indexOf(name) !== -1) {
             // 删除项目
             await this.runCommand({ command: `rm -rf ${sourceFile}`, cwd: targetFile });
             // 重新挂载

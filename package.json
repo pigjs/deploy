@@ -1,6 +1,6 @@
 {
     "name": "@pigjs/deploy",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "A front-end lightweight deployment tool",
     "keywords": [
         "deploy",
@@ -38,9 +38,12 @@
         "prepare": "npx husky install"
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx,less,css,md}": "pretty-quick --staged",
         "*.{js,jsx,ts,tsx}": "eslint --fix --quiet",
-        "*.{css,less}": "stylelint"
+        "*.{css,less}": [
+            "pretty-quick --staged",
+            "stylelint"
+        ],
+        "*.md": "pretty-quick --staged"
     },
     "dependencies": {
         "dayjs": "^1.11.7",
